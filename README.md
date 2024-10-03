@@ -45,3 +45,17 @@ primary goals of this project are:
 It's important to note that these programs are not aimed at proving the conjecture. Instead, they
 allow users to experiment with the conjecture, visualize sequences, and potentially discover
 interesting patterns or behaviors.
+
+## Algorithms
+
+[Collatz.py](python/src/collatz.py) is a Python program that implements the Collatz algorithm to
+calculate the Collatz sequence for a given number. It also allows users to sequentially calculate
+every number until they cancel.
+
+[Collatz.ts](typescript/src/index.ts) is a TypeScript program that implements the Collatz algorithm
+to calculate the Collatz sequence for a given number. It also allows users to sequentially calculate
+every number until they cancel.
+
+[Collatz.go](go/main.go) is a Go program that implements the Collatz algorithm to calculate the
+Collatz sequence for a given number. It also allows users to sequentially calculate every number
+until they cancel.
