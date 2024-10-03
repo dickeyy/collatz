@@ -16,7 +16,7 @@ The conjecture works as follows:
 1. Start with any positive integer n.
 2. If n is even, divide it by 2.
 3. If n is odd, multiply it by 3 and add 1.
-4. Repeat steps 2 and 3 until you reach 1.
+4. Repeat steps 2 and 3 until n=1.
 
 The conjecture posits that no matter what number you start with, you will always eventually reach 1,
 entering the loop 4 → 2 → 1.
