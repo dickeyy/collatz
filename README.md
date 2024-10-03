@@ -6,9 +6,9 @@ now archived repository [here](https://github.com/dickeyy/Collatz-Calculator).
 
 ## The Collatz Conjecture: An Enigmatic Mathematical Puzzle
 
-The Collatz conjecture, named after mathematician
-[Lothar Collatz](https://en.wikipedia.org/wiki/Lothar_Collatz), the most intriguing unsolved
-problems in mathematics (in my opinion). It's deceptively simple to state, yet has resisted proof
+The Collatz conjecture, named after the mathematician
+[Lothar Collatz](https://en.wikipedia.org/wiki/Lothar_Collatz), is the most intriguing unsolved
+problem in mathematics (in my opinion). It's deceptively simple to state, yet has resisted proof
 for decades.
 
 The conjecture works as follows:
