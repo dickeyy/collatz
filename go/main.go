@@ -7,9 +7,9 @@ import (
 
 // Main algorithm for calculating the Collatz sequence
 func calculateCollatz(n int, printSteps bool) int {
-	fmt.Printf("Calculating Collatz sequence for %d...\n", n)
+	fmt.Printf("\nCalculating Collatz sequence for %d...\n", n)
 	if printSteps {
-		fmt.Println("\nSteps:")
+		fmt.Println("Steps:")
 	}
 
 	steps := 0
@@ -33,26 +33,26 @@ func calculateCollatz(n int, printSteps bool) int {
 }
 
 func runProgram(mode string) {
+	showSteps := false
+	fmt.Print("Do you want to see the steps? (y/n): ")
+
+	var input string
+	fmt.Scan(&input)
+	if input == "y" {
+		showSteps = true
+	}
+
 	if mode == "s" {
 		n := 1
 		for n != 0 {
-			steps := calculateCollatz(n, false)
-			fmt.Printf("\nThe number %d took %d steps to reach 1.\n", n, steps)
+			steps := calculateCollatz(n, showSteps)
+			fmt.Printf("The number %d took %d steps to reach 1.\n", n, steps)
 			n += 1
 		}
 	} else if mode == "c" {
 		var n int
 		fmt.Print("Enter a positive integer: ")
 		fmt.Scan(&n)
-
-		showSteps := false
-		fmt.Print("Do you want to see the steps? (y/n): ")
-
-		var input string
-		fmt.Scan(&input)
-		if input == "y" {
-			showSteps = true
-		}
 
 		// Start timer
 		startTime := time.Now()

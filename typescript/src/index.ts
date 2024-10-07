@@ -1,7 +1,7 @@
 function calculateCollatz(n: number, printSteps: boolean = false): number {
-    console.log(`Calculating Collatz sequence for ${n}...`);
+    console.log(`\nCalculating Collatz sequence for ${n}...`);
     if (printSteps) {
-        console.log("\nSteps:");
+        console.log("Steps:");
     }
 
     let steps = 0;
@@ -25,16 +25,17 @@ function calculateCollatz(n: number, printSteps: boolean = false): number {
 }
 
 function runProgram(mode: string): void {
+    const showSteps = prompt("Do you want to see the steps? (y/n): ");
+
     if (mode === "s") {
         let n = 1;
         while (n !== 0) {
-            const steps = calculateCollatz(n);
-            console.log(`\nThe number ${n} took ${steps} steps to reach 1.`);
+            const steps = calculateCollatz(n, showSteps === "y");
+            console.log(`The number ${n} took ${steps} steps to reach 1.`);
             n += 1;
         }
     } else if (mode === "c") {
         const n = parseInt(prompt("Enter a positive integer: ") || "0");
-        const showSteps = prompt("Do you want to see the steps? (y/n): ");
 
         // Start timer
         const startTime = Date.now();

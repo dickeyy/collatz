@@ -2,9 +2,9 @@ import time
 
 # Main algorithm for calculating the Collatz sequence
 def calculate_collatz(n, print_steps=False):
-    print(f"Calculating Collatz sequence for {n}...")
+    print(f"\nCalculating Collatz sequence for {n}...")
     if (print_steps):
-        print("\nSteps:")
+        print("Steps:")
 
     steps = 0 
 
@@ -23,16 +23,17 @@ def calculate_collatz(n, print_steps=False):
 
 # Helper function for running the program
 def run_program(mode):
+    show_steps = input("Do you want to see the steps? (y/n): ")
+
     if mode == "s":
         n = 1
         while n != 0:
-            steps = calculate_collatz(n)
-            print(f"\nThe number {n} took {steps} steps to reach 1.")
+            steps = calculate_collatz(n, print_steps=show_steps == "y")
+            print(f"The number {n} took {steps} steps to reach 1.")
             n += 1
 
     elif mode == "c":
         n = int(input("Enter a positive integer: "))
-        show_steps = input("Do you want to see the steps? (y/n): ")
 
         # Start timer
         start_time = time.time()
