@@ -4,12 +4,17 @@ This repository contains a collection of programs designed to explore the fascin
 conjecture, also known as the 3n + 1 problem. It builds upon and extends the work from an earlier,
 now archived repository [here](https://github.com/dickeyy/Collatz-Calculator).
 
+Read about the conjecture [here](https://en.wikipedia.org/wiki/Collatz_conjecture).
+
+Algorithms in this repo. are listed [here](#algorithms). I recommend using the Go program, as it's
+the fastest and most efficient.
+
 ## The Collatz Conjecture: An Enigmatic Mathematical Puzzle
 
 The Collatz conjecture, named after the mathematician
 [Lothar Collatz](https://en.wikipedia.org/wiki/Lothar_Collatz), is the most intriguing unsolved
-problem in mathematics (in my opinion). It's deceptively simple to state, yet has resisted proof
-for decades.
+problem in mathematics (in my opinion). It's deceptively simple to state, yet has resisted proof for
+decades.
 
 The conjecture works as follows:
 
@@ -48,14 +53,14 @@ interesting patterns or behaviors.
 
 ## Algorithms
 
-[Collatz.py](python/src/collatz.py) is a Python program that implements the Collatz algorithm to
-calculate the Collatz sequence for a given number. It also allows users to sequentially calculate
-every number until they cancel.
+-   [Collatz.py](python/src/collatz.py) is a Python program that implements the Collatz algorithm to
+    calculate the Collatz sequence for a given number. It also allows users to sequentially
+    calculate every number until they cancel.
 
-[Collatz.ts](typescript/src/index.ts) is a TypeScript program that implements the Collatz algorithm
-to calculate the Collatz sequence for a given number. It also allows users to sequentially calculate
-every number until they cancel.
+-   [Collatz.ts](typescript/src/index.ts) is a TypeScript program that implements the Collatz
+    algorithm to calculate the Collatz sequence for a given number. It also allows users to
+    sequentially calculate every number until they cancel.
 
-[Collatz.go](go/main.go) is a Go program that implements the Collatz algorithm to calculate the
-Collatz sequence for a given number. It also allows users to sequentially calculate every number
-until they cancel.
+-   [Collatz.go](go/main.go) is a Go program that implements the Collatz algorithm to calculate the
+    Collatz sequence for a given number. It also allows users to sequentially calculate every number
+    until they cancel.
