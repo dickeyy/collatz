@@ -7,27 +7,27 @@ import (
 
 // Main algorithm for calculating the Collatz sequence
 func calculateCollatz(n int, printSteps bool) int {
-	currentNum := n
+	fmt.Printf("\nCalculating Collatz sequence for %d...\n", n)
+	if printSteps {
+		fmt.Println("Steps:")
+	}
+
 	steps := 0
 
-	if printSteps {
-		fmt.Printf("\033[s") // Save cursor position
-	}
-
-	for currentNum != 1 {
-		if currentNum%2 == 0 {
-			currentNum = currentNum / 2
+	for n != 1 {
+		if n%2 == 0 {
+			n = n / 2
+			steps += 1
+			if printSteps {
+				fmt.Println(n)
+			}
 		} else {
-			currentNum = 3*currentNum + 1
+			n = 3*n + 1
+			steps += 1
+			if printSteps {
+				fmt.Println(n)
+			}
 		}
-		steps += 1
-		if printSteps {
-			fmt.Printf("\033[u\033[K") // Restore cursor position and clear line
-			fmt.Printf("Current: %d, Steps: %d", currentNum, steps)
-		}
-	}
-	if printSteps {
-		fmt.Println() // Move to next line after completion
 	}
 	return steps
 }
@@ -44,22 +44,22 @@ func runProgram(mode string) {
 
 	if mode == "s" {
 		n := 1
-		fmt.Printf("\033[s") // Save initial cursor position
 		for n != 0 {
 			steps := calculateCollatz(n, showSteps)
-			fmt.Printf("\033[u\033[K") // Restore cursor and clear line
-			fmt.Printf("The number %d took %d steps to reach 1.", n, steps)
+			fmt.Printf("The number %d took %d steps to reach 1.\n", n, steps)
 			n += 1
 		}
-		fmt.Println() // Final newline
 	} else if mode == "c" {
 		var n int
 		fmt.Print("Enter a positive integer: ")
 		fmt.Scan(&n)
 
+		// Start timer
 		startTime := time.Now()
 		steps := calculateCollatz(n, showSteps)
 		endTime := time.Now()
+
+		// Calculate elapsed time
 		elapsedTime := endTime.Sub(startTime).Seconds()
 
 		fmt.Printf("\nThe number %d took %d steps to reach 1 in %.4f seconds.\n", n, steps, elapsedTime)
