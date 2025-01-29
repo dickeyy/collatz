@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -45,7 +46,22 @@ func runProgram(mode string) {
 	}
 
 	if mode == "s" {
-		n := 1
+		var n int
+		fmt.Println("Would you like to start at 1 or a specific number? (1 or n): ")
+		var input string
+		fmt.Scan(&input)
+		if input == "n" {
+			fmt.Print("Enter a positive integer: ")
+			fmt.Scan(&input)
+			start, err := strconv.Atoi(input)
+			if err != nil {
+				fmt.Println("Invalid input. Please enter a positive integer.")
+				main()
+			}
+			n = start
+		} else {
+			n = 1
+		}
 		startTime := time.Now()
 
 		for n != 0 {
