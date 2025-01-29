@@ -5,16 +5,22 @@ import (
 	"time"
 )
 
+// ANSI color codes
+const (
+	Gray  = "\033[38;5;242m"
+	Pink  = "\033[38;5;205m"
+	Green = "\033[38;5;046m"
+	Reset = "\033[0m"
+)
+
 // Main algorithm for calculating the Collatz sequence
 func calculateCollatz(n int, printSteps bool) int {
 	if printSteps {
-		fmt.Printf("\nCalculating Collatz sequence for %d...\n", n)
-		fmt.Println("Steps:")
+		fmt.Printf("\n%sCalculating Collatz sequence for %s%d%s...\n", Gray, Pink, n, Reset)
+		fmt.Println(Gray + "Steps:" + Reset)
 	}
-
 	steps := 0
 	currentNum := n
-
 	for currentNum != 1 {
 		if currentNum%2 == 0 {
 			currentNum = currentNum / 2
@@ -23,7 +29,7 @@ func calculateCollatz(n int, printSteps bool) int {
 		}
 		steps++
 		if printSteps {
-			fmt.Println(currentNum)
+			fmt.Printf("%s%d%s\n", Gray, currentNum, Reset)
 		}
 	}
 	return steps
@@ -32,7 +38,6 @@ func calculateCollatz(n int, printSteps bool) int {
 func runProgram(mode string) {
 	showSteps := false
 	fmt.Print("Do you want to see the steps? (y/n): ")
-
 	var input string
 	fmt.Scan(&input)
 	if input == "y" {
@@ -40,34 +45,25 @@ func runProgram(mode string) {
 	}
 
 	if mode == "s" {
-		// Ask user for report frequency
-		fmt.Print("Enter how often you want status updates (int > 0; every n calculations): ")
-		var reportFrequency int
-		fmt.Scan(&reportFrequency)
-
-		if reportFrequency <= 0 {
-			fmt.Println("Report frequency must be greater than 0")
-			return
-		}
-
 		n := 1
+		startTime := time.Now()
+
 		for n != 0 {
-			steps := calculateCollatz(n, showSteps && (n%reportFrequency == 0))
-			if n%reportFrequency == 0 {
-				fmt.Printf("The number %d took %d steps to reach 1.\n", n, steps)
-			}
+			steps := calculateCollatz(n, showSteps)
+			currentRate := float64(n) / time.Since(startTime).Seconds()
+			fmt.Printf("%s%d%s took %s%d%s steps to reach 1. (%s%.2f %sMil/s)%s\n",
+				Pink, n, Gray, Pink, steps, Gray, Green, currentRate/1000000, Gray, Reset)
 			n++
 		}
 	} else if mode == "c" {
 		var n int
 		fmt.Print("Enter a positive integer: ")
 		fmt.Scan(&n)
-
 		startTime := time.Now()
 		steps := calculateCollatz(n, showSteps)
-		elapsedTime := time.Now().Sub(startTime).Seconds()
-
-		fmt.Printf("\nThe number %d took %d steps to reach 1 in %.4f seconds.\n", n, steps, elapsedTime)
+		rate := 1.0 / time.Since(startTime).Seconds()
+		fmt.Printf("%s%d%s took %s%d%s steps to reach 1. (%s%.2f %sMil/s)%s\n",
+			Pink, n, Gray, Pink, steps, Gray, Green, rate/1000000, Gray, Reset)
 	} else {
 		fmt.Println("Invalid input. Please enter 's' or 'c'.")
 		main()
