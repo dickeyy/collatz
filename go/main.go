@@ -7,26 +7,23 @@ import (
 
 // Main algorithm for calculating the Collatz sequence
 func calculateCollatz(n int, printSteps bool) int {
-	fmt.Printf("\nCalculating Collatz sequence for %d...\n", n)
 	if printSteps {
+		fmt.Printf("\nCalculating Collatz sequence for %d...\n", n)
 		fmt.Println("Steps:")
 	}
 
 	steps := 0
+	currentNum := n
 
-	for n != 1 {
-		if n%2 == 0 {
-			n = n / 2
-			steps += 1
-			if printSteps {
-				fmt.Println(n)
-			}
+	for currentNum != 1 {
+		if currentNum%2 == 0 {
+			currentNum = currentNum / 2
 		} else {
-			n = 3*n + 1
-			steps += 1
-			if printSteps {
-				fmt.Println(n)
-			}
+			currentNum = 3*currentNum + 1
+		}
+		steps++
+		if printSteps {
+			fmt.Println(currentNum)
 		}
 	}
 	return steps
@@ -43,24 +40,32 @@ func runProgram(mode string) {
 	}
 
 	if mode == "s" {
+		// Ask user for report frequency
+		fmt.Print("Enter how often you want status updates (int > 0; every n calculations): ")
+		var reportFrequency int
+		fmt.Scan(&reportFrequency)
+
+		if reportFrequency <= 0 {
+			fmt.Println("Report frequency must be greater than 0")
+			return
+		}
+
 		n := 1
 		for n != 0 {
-			steps := calculateCollatz(n, showSteps)
-			fmt.Printf("The number %d took %d steps to reach 1.\n", n, steps)
-			n += 1
+			steps := calculateCollatz(n, showSteps && (n%reportFrequency == 0))
+			if n%reportFrequency == 0 {
+				fmt.Printf("The number %d took %d steps to reach 1.\n", n, steps)
+			}
+			n++
 		}
 	} else if mode == "c" {
 		var n int
 		fmt.Print("Enter a positive integer: ")
 		fmt.Scan(&n)
 
-		// Start timer
 		startTime := time.Now()
 		steps := calculateCollatz(n, showSteps)
-		endTime := time.Now()
-
-		// Calculate elapsed time
-		elapsedTime := endTime.Sub(startTime).Seconds()
+		elapsedTime := time.Now().Sub(startTime).Seconds()
 
 		fmt.Printf("\nThe number %d took %d steps to reach 1 in %.4f seconds.\n", n, steps, elapsedTime)
 	} else {
