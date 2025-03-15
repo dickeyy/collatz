@@ -57,7 +57,7 @@ func runProgram(mode string) {
 			start, err := strconv.ParseInt(input, 10, 64)
 			if err != nil {
 				fmt.Println("Invalid input. Please enter a positive integer.")
-				main()
+				return
 			}
 			n = start
 		} else {
@@ -80,7 +80,6 @@ func runProgram(mode string) {
 		parsedN, err := strconv.ParseInt(inputStr, 10, 64)
 		if err != nil {
 			fmt.Println("Invalid input. Please enter a positive integer.")
-			main()
 			return
 		}
 		n = parsedN
@@ -91,8 +90,16 @@ func runProgram(mode string) {
 			Pink, n, Gray, Pink, steps, Gray, Green, rate/1000000, Gray, Reset)
 	} else {
 		fmt.Println("Invalid input. Please enter 's' or 'c'.")
-		main()
+		promptForMode()
 	}
+}
+
+// Helper function to prompt for mode and run the program
+func promptForMode() {
+	mode := "s"
+	fmt.Print("Enter 's' to sequentially calculate every number, or 'c' to calculate the sequence of a single number: ")
+	fmt.Scan(&mode)
+	runProgram(mode)
 }
 
 func runProgramDefault() {
@@ -119,9 +126,6 @@ func main() {
 	if *defaultMode {
 		runProgramDefault()
 	} else {
-		mode := "s"
-		fmt.Print("Enter 's' to sequentially calculate every number, or 'c' to calculate the sequence of a single number: ")
-		fmt.Scan(&mode)
-		runProgram(mode)
+		promptForMode()
 	}
 }
