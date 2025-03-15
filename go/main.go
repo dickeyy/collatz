@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"strconv"
+	"math/big"
 	"time"
 )
 
@@ -15,25 +15,44 @@ const (
 	Reset = "\033[0m"
 )
 
+var (
+	// Define constants as big.Int values
+	zero  = big.NewInt(0)
+	one   = big.NewInt(1)
+	two   = big.NewInt(2)
+	three = big.NewInt(3)
+)
+
 // Main algorithm for calculating the Collatz sequence
-func calculateCollatz(n int64, printSteps bool) int64 {
+func calculateCollatz(n *big.Int, printSteps bool) *big.Int {
 	if printSteps {
-		fmt.Printf("\n%sCalculating Collatz sequence for %s%d%s...\n", Gray, Pink, n, Reset)
+		fmt.Printf("\n%sCalculating Collatz sequence for %s%v%s...\n", Gray, Pink, n, Reset)
 		fmt.Println(Gray + "Steps:" + Reset)
 	}
-	var steps int64 = 0
-	currentNum := n
-	for currentNum != 1 {
-		if currentNum%2 == 0 {
-			currentNum = currentNum / 2
+
+	steps := big.NewInt(0)
+	currentNum := new(big.Int).Set(n)
+
+	for currentNum.Cmp(one) != 0 {
+		// Check if even: currentNum % 2 == 0
+		remainder := new(big.Int)
+		currentNum.DivMod(currentNum, two, remainder)
+
+		if remainder.Cmp(zero) == 0 {
+			// Already divided by 2 in the DivMod operation
 		} else {
-			currentNum = 3*currentNum + 1
+			// 3*currentNum + 1
+			currentNum.Mul(currentNum, three)
+			currentNum.Add(currentNum, one)
 		}
-		steps++
+
+		steps.Add(steps, one)
+
 		if printSteps {
-			fmt.Printf("%s%d%s\n", Gray, currentNum, Reset)
+			fmt.Printf("%s%v%s\n", Gray, currentNum, Reset)
 		}
 	}
+
 	return steps
 }
 
@@ -47,46 +66,65 @@ func runProgram(mode string) {
 	}
 
 	if mode == "s" {
-		var n int64
 		fmt.Println("Would you like to start at 1 or a specific number? (1 or n): ")
 		var input string
 		fmt.Scan(&input)
+
+		n := big.NewInt(1)
+
 		if input == "n" {
 			fmt.Print("Enter a positive integer: ")
 			fmt.Scan(&input)
-			start, err := strconv.ParseInt(input, 10, 64)
-			if err != nil {
+
+			// Try to parse the input as a big.Int
+			_, success := n.SetString(input, 10)
+			if !success || n.Cmp(zero) <= 0 {
 				fmt.Println("Invalid input. Please enter a positive integer.")
 				return
 			}
-			n = start
-		} else {
-			n = 1
 		}
-		startTime := time.Now()
 
-		for n != 0 {
+		startTime := time.Now()
+		count := big.NewInt(0)
+
+		for {
+			if n.Cmp(zero) == 0 {
+				break
+			}
+
 			steps := calculateCollatz(n, showSteps)
-			currentRate := float64(n) / time.Since(startTime).Seconds()
-			fmt.Printf("%s%d%s took %s%d%s steps to reach 1. (%s%.2f %sMil/s)%s\n",
+			count.Add(count, one)
+
+			// Use floating point for rate calculation
+			nFloat, _ := new(big.Float).SetInt(n).Float64()
+			currentRate := nFloat / time.Since(startTime).Seconds()
+
+			fmt.Printf("%s%v%s took %s%v%s steps to reach 1. (%s%.2f %sMil/s)%s\n",
 				Pink, n, Gray, Pink, steps, Gray, Green, currentRate/1000000, Gray, Reset)
-			n++
+
+			n.Add(n, one)
 		}
 	} else if mode == "c" {
-		var n int64
 		fmt.Print("Enter a positive integer: ")
 		var inputStr string
 		fmt.Scan(&inputStr)
-		parsedN, err := strconv.ParseInt(inputStr, 10, 64)
-		if err != nil {
+
+		n := new(big.Int)
+		_, success := n.SetString(inputStr, 10)
+
+		if !success || n.Cmp(zero) <= 0 {
 			fmt.Println("Invalid input. Please enter a positive integer.")
 			return
 		}
-		n = parsedN
+
 		startTime := time.Now()
 		steps := calculateCollatz(n, showSteps)
-		rate := 1.0 / time.Since(startTime).Seconds()
-		fmt.Printf("%s%d%s took %s%d%s steps to reach 1. (%s%.2f %sMil/s)%s\n",
+		elapsed := time.Since(startTime).Seconds()
+
+		// For large numbers, calculation of rate might not be meaningful
+		rate := 1.0 / elapsed
+
+		fmt.Printf("%s%v%s took %s%v%s steps to reach 1. (%s%.2f %sMil/s)%s\n",
 			Pink, n, Gray, Pink, steps, Gray, Green, rate/1000000, Gray, Reset)
 	} else {
 		fmt.Println("Invalid input. Please enter 's' or 'c'.")
@@ -105,13 +143,25 @@ func promptForMode() {
 func runProgramDefault() {
 	// here just default to sequential mode, no steps, start at 1
 	startTime := time.Now()
-	var n int64 = 1
-	for n != 0 {
+	n := big.NewInt(1)
+	count := big.NewInt(0)
+
+	for {
+		if n.Cmp(zero) == 0 {
+			break
+		}
+
 		steps := calculateCollatz(n, false)
-		currentRate := float64(n) / time.Since(startTime).Seconds()
-		fmt.Printf("%s%d%s took %s%d%s steps to reach 1. (%s%.2f %sMil/s)%s\n",
+		count.Add(count, one)
+
+		// Use floating point for rate calculation
+		nFloat, _ := new(big.Float).SetInt(n).Float64()
+		currentRate := nFloat / time.Since(startTime).Seconds()
+
+		fmt.Printf("%s%v%s took %s%v%s steps to reach 1. (%s%.2f %sMil/s)%s\n",
 			Pink, n, Gray, Pink, steps, Gray, Green, currentRate/1000000, Gray, Reset)
-		n++
+
+		n.Add(n, one)
 	}
 }
 
