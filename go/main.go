@@ -24,8 +24,8 @@ func calculateCollatz(n uint, printSteps bool) uint {
 	var steps uint = 0
 	currentNum := n
 	for currentNum != 1 {
-		if currentNum%2 == 0 {
-			currentNum = currentNum / 2
+		if (currentNum & 1) == 0 {
+			currentNum = currentNum >> 1
 		} else {
 			currentNum = 3*currentNum + 1
 		}
