@@ -16,12 +16,12 @@ const (
 )
 
 // Main algorithm for calculating the Collatz sequence
-func calculateCollatz(n int, printSteps bool) int {
+func calculateCollatz(n int64, printSteps bool) int64 {
 	if printSteps {
 		fmt.Printf("\n%sCalculating Collatz sequence for %s%d%s...\n", Gray, Pink, n, Reset)
 		fmt.Println(Gray + "Steps:" + Reset)
 	}
-	steps := 0
+	var steps int64 = 0
 	currentNum := n
 	for currentNum != 1 {
 		if currentNum%2 == 0 {
@@ -47,14 +47,14 @@ func runProgram(mode string) {
 	}
 
 	if mode == "s" {
-		var n int
+		var n int64
 		fmt.Println("Would you like to start at 1 or a specific number? (1 or n): ")
 		var input string
 		fmt.Scan(&input)
 		if input == "n" {
 			fmt.Print("Enter a positive integer: ")
 			fmt.Scan(&input)
-			start, err := strconv.Atoi(input)
+			start, err := strconv.ParseInt(input, 10, 64)
 			if err != nil {
 				fmt.Println("Invalid input. Please enter a positive integer.")
 				main()
@@ -73,9 +73,17 @@ func runProgram(mode string) {
 			n++
 		}
 	} else if mode == "c" {
-		var n int
+		var n int64
 		fmt.Print("Enter a positive integer: ")
-		fmt.Scan(&n)
+		var inputStr string
+		fmt.Scan(&inputStr)
+		parsedN, err := strconv.ParseInt(inputStr, 10, 64)
+		if err != nil {
+			fmt.Println("Invalid input. Please enter a positive integer.")
+			main()
+			return
+		}
+		n = parsedN
 		startTime := time.Now()
 		steps := calculateCollatz(n, showSteps)
 		rate := 1.0 / time.Since(startTime).Seconds()
@@ -90,7 +98,7 @@ func runProgram(mode string) {
 func runProgramDefault() {
 	// here just default to sequential mode, no steps, start at 1
 	startTime := time.Now()
-	n := 1
+	var n int64 = 1
 	for n != 0 {
 		steps := calculateCollatz(n, false)
 		currentRate := float64(n) / time.Since(startTime).Seconds()
