@@ -24,10 +24,11 @@ func calculateCollatz(n uint, printSteps bool) uint {
 	var steps uint = 0
 	currentNum := n
 	for currentNum != 1 {
+		// bitwise %2
 		if (currentNum & 1) == 0 {
-			currentNum = currentNum >> 1
+			currentNum = currentNum >> 1 // bitwise division by 2
 		} else {
-			currentNum = 3*currentNum + 1
+			currentNum = (currentNum * 3) + 1
 		}
 		steps++
 		if printSteps {
