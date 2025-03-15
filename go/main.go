@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"strconv"
 	"time"
@@ -86,9 +87,33 @@ func runProgram(mode string) {
 	}
 }
 
+func runProgramDefault() {
+	// here just default to sequential mode, no steps, start at 1
+	startTime := time.Now()
+	n := 1
+	for n != 0 {
+		steps := calculateCollatz(n, false)
+		currentRate := float64(n) / time.Since(startTime).Seconds()
+		fmt.Printf("%s%d%s took %s%d%s steps to reach 1. (%s%.2f %sMil/s)%s\n",
+			Pink, n, Gray, Pink, steps, Gray, Green, currentRate/1000000, Gray, Reset)
+		n++
+	}
+}
+
 func main() {
-	mode := "s"
-	fmt.Print("Enter 's' to sequentially calculate every number, or 'c' to calculate the sequence of a single number: ")
-	fmt.Scan(&mode)
-	runProgram(mode)
+	// Define the -d flag
+	defaultMode := flag.Bool("d", false, "Run in default mode without user input")
+
+	// Parse the input flags
+	flag.Parse()
+
+	// Check if the -d flag is set
+	if *defaultMode {
+		runProgramDefault()
+	} else {
+		mode := "s"
+		fmt.Print("Enter 's' to sequentially calculate every number, or 'c' to calculate the sequence of a single number: ")
+		fmt.Scan(&mode)
+		runProgram(mode)
+	}
 }
